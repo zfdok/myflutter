@@ -10,51 +10,54 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: MyHomePage(title: 'Flutter Demo Home Page'),
+      home: Scaffold(
+        appBar: AppBar(
+          title: Text("data"),
+        ),
+        body: CountCard(),
+      ),
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key, this.title}) : super(key: key);
-  final String title;
-
+class CountCard extends StatefulWidget {
   @override
-  _MyHomePageState createState() => _MyHomePageState();
+  _CountCardState createState() => _CountCardState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
-  }
-
+class _CountCardState extends State<CountCard> {
+  int count = 0;
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title),
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              'You have pushed the button this many times:',
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.display1,
-            ),
-          ],
-        ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: Icon(Icons.add),
+    return Card(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisSize: MainAxisSize.min,
+        children: <Widget>[
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              RaisedButton(
+                  child: Text("+"),
+                  onPressed: () {
+                    setState(() {
+                      count++;
+                    });
+                  }),
+              SizedBox(
+                width: 10,
+              ),
+              RaisedButton(
+                  child: Text("-"),
+                  onPressed: () {
+                    setState(() {
+                      count--;
+                    });
+                  })
+            ],
+          ),
+          Text("当前计数:$count",style: TextStyle(fontSize: 30),),
+        ],
       ),
     );
   }
