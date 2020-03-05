@@ -1,4 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutterapplearn/views/group/group.dart';
+import 'package:flutterapplearn/views/mall/mall.dart';
+import 'package:flutterapplearn/views/profile/profile.dart';
+import 'package:flutterapplearn/views/subject/subject.dart';
+import './components/my_bottom_bar.dart';
+import './views/home/home.dart';
 
 void main() => runApp(MyApp());
 
@@ -27,21 +33,6 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
   int _selectedIndex = 0;
   static const TextStyle optionStyle =
       TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
-  static const List<Widget> _widgetOptions = <Widget>[
-    Text(
-      'Index 0: Home',
-      style: optionStyle,
-    ),
-    Text(
-      'Index 1: Business',
-      style: optionStyle,
-    ),
-    Text(
-      'Index 2: School',
-      style: optionStyle,
-    ),
-  ];
-
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
@@ -51,26 +42,25 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('BottomNavigationBar Sample'),
-      ),
-      body: Center(
-        child: _widgetOptions.elementAt(_selectedIndex),
+      body: IndexedStack(
+        index: _selectedIndex,
+        children: <Widget>[
+          MyHome(),
+          MySubject(),
+          MyGroup(),
+          MyMall(),
+          MyProfile()
+        ],
       ),
       bottomNavigationBar: BottomNavigationBar(
-        items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            title: Text('首页'),
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.business),
-            title: Text('分类'),
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.school),
-            title: Text('我的'),
-          ),
+        type: BottomNavigationBarType.fixed,
+        items: [
+          MyBottomBar('首页', Icon(Icons.home), Icon(Icons.home)),
+          MyBottomBar('影音', Icon(Icons.movie), Icon(Icons.movie_filter)),
+          MyBottomBar('小组', Icon(Icons.group), Icon(Icons.group_work)),
+          MyBottomBar(
+              '市场', Icon(Icons.local_mall), Icon(Icons.store_mall_directory)),
+          MyBottomBar('我的', Icon(Icons.person_outline), Icon(Icons.person)),
         ],
         currentIndex: _selectedIndex,
         onTap: _onItemTapped,
