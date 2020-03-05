@@ -2,72 +2,78 @@ import 'package:flutter/material.dart';
 
 void main() => runApp(MyApp());
 
+/// This Widget is the main application widget.
 class MyApp extends StatelessWidget {
+  static const String _title = 'Flutter Code Sample';
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: Scaffold(
-        appBar: AppBar(
-          title: Text("data"),
-        ),
-        body: MyWidget(),
-      ),
+      title: _title,
+      home: MyStatefulWidget(),
+      theme: ThemeData(primaryColor: Colors.green),
     );
   }
 }
 
-class MyWidget extends StatefulWidget {
-  MyWidget() {
-    print("MyWidget的构造函数被调用");
-  }
+class MyStatefulWidget extends StatefulWidget {
+  MyStatefulWidget({Key key}) : super(key: key);
+
   @override
-  _MyWidgetState createState() {
-    print("MyWidget的createState函数被调用");
-    return _MyWidgetState();
-  }
+  _MyStatefulWidgetState createState() => _MyStatefulWidgetState();
 }
 
-class _MyWidgetState extends State<MyWidget> {
-  int counter = 0;
-  _MyWidgetState() {
-    print("_MyWidgetState的构造函数被调用");
-  }
-  void initState() {
-    super.initState();
-    print("_MyWidgetState的initState函数被调用");
-  }
+class _MyStatefulWidgetState extends State<MyStatefulWidget> {
+  int _selectedIndex = 0;
+  static const TextStyle optionStyle =
+      TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
+  static const List<Widget> _widgetOptions = <Widget>[
+    Text(
+      'Index 0: Home',
+      style: optionStyle,
+    ),
+    Text(
+      'Index 1: Business',
+      style: optionStyle,
+    ),
+    Text(
+      'Index 2: School',
+      style: optionStyle,
+    ),
+  ];
 
-  @override
-  void didChangeDependencies() {
-    print("_MyWidgetState的didChangeDependencies函数被调用");
-    super.didChangeDependencies();
-  }
-
-  @override
-  void didUpdateWidget(MyWidget oldWidget) {
-    print("_MyWidgetState的didUpdateWidget函数被调用");
-    super.didUpdateWidget(oldWidget);
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    print("_MyWidgetState的build函数被调用");
-    return Center(
-      child: Column(
-        children: <Widget>[
-          RaisedButton(
-              child: Text("+"),
-              onPressed: () {
-                setState(() {
-                  counter++;
-                });
-              }),
-          Text("counter:$counter")
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('BottomNavigationBar Sample'),
+      ),
+      body: Center(
+        child: _widgetOptions.elementAt(_selectedIndex),
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        items: const <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            title: Text('首页'),
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.business),
+            title: Text('分类'),
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.school),
+            title: Text('我的'),
+          ),
         ],
+        currentIndex: _selectedIndex,
+        onTap: _onItemTapped,
       ),
     );
   }
